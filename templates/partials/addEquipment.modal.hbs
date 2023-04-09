@@ -1,0 +1,89 @@
+<div class="modal fade" id="addEqModal" tabindex="-1" aria-labelledby="addEqModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"> Add Equipment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+
+
+          <form action="#" method="POST" id="appForm">
+           
+
+            <div class="mb-3">
+              <label for="assetTag" class="form-label"><strong> Asset Tag:</strong></label>
+
+              <input class="form-control" type="text" id="assetTag" name="assetTag" >
+
+            </div>
+            <div>
+
+              <label for="serialNumber" class="form-label"><strong> Serial Number:</strong></label>
+
+              <input type="text" class="form-control " id="serialNumber" name="serialNumber">
+
+            </div>
+
+            <div>
+
+              <label for="equipmentType" class="form-label"><strong> Equipment Type:</strong></label>
+
+              <input type="text" class="form-control " id="equipmentType" name="equipmentType">
+
+            </div>
+
+            <div>
+
+              <label for="model" class="form-label"><strong> Model :</strong></label>
+
+              <input type="text" class="form-control " id="model" name="model">
+
+            </div>
+
+
+
+            <div class="mb-3">
+              <label for="department" class="form-label"><strong>Sub Location/department:</strong></label>
+
+              <select class="form-select  " name="department" aria-label=".form-select-sm example">
+            
+                <option value="RECORDS">RECORDS</option>
+                <option value="CANCER REGISTRY">CANCER REGISTRY</option>
+                <option value="STATISTICS">STATISTICS</option>
+                <option value="ICT">ICT</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label"><strong>Physical Location:</strong></label>
+
+              <select class="form-select  " name="physicalLocation" aria-label=".form-select-sm example">
+                <option value="HEALTH INFORMATION 19">HEALTH INFORMATION 19</option>
+                <option value="MAIN STORE">MAIN STORE</option>
+                <option value="ICT WORKSHOP">ICT WORKSHOP</option>
+                <option value="CLINIC 18">CLINIC 18</option>
+              </select>
+            </div>
+
+           
+
+            <div class="modal-footer">
+
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+              <button type="submit" class="btn btn-primary">Add Equipment</button>
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+</div>

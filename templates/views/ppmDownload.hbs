@@ -1,0 +1,76 @@
+{{> head}}
+
+<body class="row">
+
+
+  <!-- start of nav bar -->
+
+  {{> navBar}}
+
+  <!-- end of navbar -->
+
+
+  <!-- start of side bar -->
+  {{> sidebar}}
+  
+  <!-- end of side bar -->
+ 
+  <!-- start of page content -->
+  
+
+ <div class="col-sm-8 pt-2 mt-3  " style="">
+      
+   {{> messages }}           
+    <nav class="navbar navbar-expand-sm bg-dark container-fluid">
+
+   <p class="text-white p-1 fs-5">Patients </p></span>
+  
+ </nav>
+   
+
+   <div class="bg-white p-3  pt-4 ">
+                     <table id="ppm-table" class="table  table-responsive   table-striped  table-bordered">
+  <thead>
+    <tr>
+      <th class="fs-6">Total Assets</th>
+      <th class="fs-6">Location Name</th>
+       <th>Download Sheet</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{!-- todo: make a location id for each location --}}
+    {{#each results}}
+    <tr>
+      <td>{{this.totalAssets}}</td>
+      <td class="fs-6 text-nowrap">{{this._id}}</td>    
+      
+      <td class="fs-6">
+        <button  class='btn btn-link btn-sm' id="downloadPdf" data-bs-toggle='modal tooltip'  data-bs-patientid="{{this.patientId}}" data-bs-target="#prescModal" data-bs-placement="bottom" title="Add Prescription">
+            <span style="font-size: 1.2em;">
+         <i class="fa-solid fa-user-doctor"></i>
+            </span>
+            </button>
+
+
+        </td> 
+     
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+</div>
+<!-- Modal -->
+{{!-- {{>addPrescription.modal}}
+
+{{>doc.appointment.modal}} --}}
+  </div>
+
+
+  <!-- end of page  content -->
+
+
+
+
+
+  {{> footer}}
