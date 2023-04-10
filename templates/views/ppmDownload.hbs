@@ -23,7 +23,7 @@
    {{> messages }}           
     <nav class="navbar navbar-expand-sm bg-dark container-fluid">
 
-   <p class="text-white p-1 fs-5">Patients </p></span>
+   <p class="text-white p-1 fs-5">Download PPM sheets </p></span>
   
  </nav>
    
@@ -41,13 +41,13 @@
     {{!-- todo: make a location id for each location --}}
     {{#each results}}
     <tr>
-      <td>{{this.totalAssets}}</td>
-      <td class="fs-6 text-nowrap">{{this._id}}</td>    
+      <td class="text-center">{{this.totalAssets}}</td>
+      <td class="fs-6 text-nowrap text-center">{{this._id}}</td>    
       
-      <td class="fs-6">
+      <td class="fs-6 text-center">
         <button  class='btn btn-link btn-sm' id="downloadPdf" data-bs-toggle='modal tooltip'  data-bs-patientid="{{this.patientId}}" data-bs-target="#prescModal" data-bs-placement="bottom" title="Add Prescription">
             <span style="font-size: 1.2em;">
-         <i class="fa-solid fa-user-doctor"></i>
+          <i class="fa-solid fa-download"></i>
             </span>
             </button>
 

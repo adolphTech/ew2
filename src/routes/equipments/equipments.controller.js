@@ -10,9 +10,9 @@ async function httpRenderEq(req, res) {
     try {
 
 
-        const equipsArr = await axios.get(`${process.env.DOMAIN}/eq`)
+        const equipsArr = await axios.get(`${process.env.DOMAIN}/all`)
         const equips = equipsArr.data
-            // console.log(appointments)
+            // console.log(equips)
 
         res.render("equipments.hbs", { equips, page: "ALL EQUIPMENTS" })
 
@@ -22,11 +22,24 @@ async function httpRenderEq(req, res) {
     }
 }
 // todo : check if location is there
-async function httpFetchEquip(req, res) {
+async function httpFetchEquipSpec(req, res) {
     try {
         const location = req.query.location
+            // console.log(location)
         const equipments = await Equipment.find({ physicalLocation: location });
         res.send(equipments);
+        // console.log(equipments)
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+async function httpFetchEquip(req, res) {
+    try {
+
+        const equipments = await Equipment.find({});
+        res.send(equipments);
+        // console.log(equipments)
     } catch (e) {
         console.log(e);
     }
@@ -34,4 +47,5 @@ async function httpFetchEquip(req, res) {
 
 
 
-module.exports = { httpFetchEquip, httpRenderEq };
+
+module.exports = { httpFetchEquip, httpRenderEq, httpFetchEquipSpec };

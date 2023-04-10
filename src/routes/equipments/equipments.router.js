@@ -2,13 +2,14 @@ const express = require("express");
 
 
 
-const { httpFetchEquip, httpRenderEq, } = require("./equipments.controller");
+const { httpFetchEquip, httpRenderEq, httpFetchEquipSpec } = require("./equipments.controller");
 
 
 const equipmentsRouter = express.Router();
 
-equipmentsRouter.get("/", httpFetchEquip);
-equipmentsRouter.get("/all", httpRenderEq);
+equipmentsRouter.get("/", httpRenderEq);
+equipmentsRouter.get("/loc", httpFetchEquipSpec)
+equipmentsRouter.get("/all", httpFetchEquip);
 
 
 

@@ -21,7 +21,7 @@ const robotoFont = {
 async function getUsers(location) {
     try {
         // const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-        const response = await axios.get(`${process.env.DOMAIN}/eq?location=${location}`)
+        const response = await axios.get(`${process.env.DOMAIN}/loc?location=${location}`)
             // console.log(response.data)
         return response.data;
     } catch (error) {

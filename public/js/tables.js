@@ -12,7 +12,7 @@ $(document).ready(function() {
             { data: 'location' },
             { data: 'subLocation' },
 
-            { data: 'action' }
+            // { data: 'action' }
         ]
     });
 
@@ -37,7 +37,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     var table = $('#ppm-table').DataTable({
         pageLength: 4,
-        lengthMenu: [3, 4, 5],
+        lengthMenu: [3, 4],
         columns: [
             { data: 'totalAssets' },
             { data: 'location' },
