@@ -1,5 +1,46 @@
 // ---------------- all eq table --------------------------------------//
 
+// $(document).ready(function() {
+//     var table = $('#equips-table').DataTable({
+//         pageLength: 2,
+//         lengthMenu: [1, 2, 3, 4, 5],
+//         columns: [
+//             { data: 'assetTag' },
+//             { data: 'serialNumber' },
+//             { data: 'equipmentType' },
+//             { data: 'model' },
+//             { data: 'location' },
+//             { data: 'subLocation' },
+
+//             { data: 'repair' }
+//         ]
+//     });
+
+//     $('#equips-table tbody').on('click', '#repair', function() {
+//         var data = table.row($(this).parents('tr')).data(); // Get data from clicked row
+//         console.log(data)
+
+//         $('#assetTag').text(data.assetTag);
+//         $('#assetTag').val(data.assetTag);
+
+//         $('#model').text(data.model);
+//         $('#model').val(data.model);
+
+//         // $("#appPatientEmail").text(data.patientEmail)
+//         // $("#appPatientEmail").val(data.patientEmail);
+
+//         // $('#appPatientId').text(data.patientId)
+//         // $('#appPatientId').val(data.patientId); // Set patient ID in hidden input
+
+
+//         $('#repairModal').modal('show');
+//     });
+
+
+
+
+// });
+
 $(document).ready(function() {
     var table = $('#equips-table').DataTable({
         pageLength: 2,
@@ -11,22 +52,27 @@ $(document).ready(function() {
             { data: 'model' },
             { data: 'location' },
             { data: 'subLocation' },
-
-            // { data: 'action' }
+            { data: 'repair' }
         ]
     });
 
-    $('#equips-table tbody').on('click', '#appButton', function() {
+    $('#equips-table tbody').on('click', '#repair', function() {
         var data = table.row($(this).parents('tr')).data(); // Get data from clicked row
-        console.log(data)
+        console.log(data);
 
+        $('#randomnTag').text(data.assetTag); // Set assetTag value inside modal
+        $('#randomnModel').text(data.model);
 
+        $('#repairModal').modal('show');
     });
-
-
-
-
 });
+
+
+
+
+
+
+
 
 // ---------------- all equips table  end--------------------------------------//
 
