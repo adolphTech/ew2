@@ -3,7 +3,8 @@ const path = require("path");
 const axios = require("axios");
 const moment = require("moment");
 const PdfPrinter = require('pdfmake');
-const Equipment = require("../../models/equipment.model");
+const Repair = require("../../models/repairs.model");
+
 require("dotenv").config();
 
 const normalPathRoboto = path.join(__dirname, "./utils/Roboto-Regular.ttf")
@@ -17,12 +18,12 @@ const robotoFont = {
         bold: boldPathRoboto
     }
 };
-// ===========================PPM PDF ==================//
-async function getUsers(location) {
+
+async function getRepairs() {
     try {
-        // const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-        const response = await axios.get(`${process.env.DOMAIN}/loc?location=${location}`)
-            // console.log(response.data)
+
+        const response = await axios.get(`${process.env.DOMAIN}/repair`)
+        console.log(response.data)
         return response.data;
     } catch (error) {
         throw new Error('Failed to retrieve user data');
@@ -139,14 +140,14 @@ function createPdf(tableBody, location) {
     return pdfDoc;
 }
 
-async function httpDownloadPdf(req, res) {
+async function repair(req, res) {
     try {
         // const { location } = req.body;
         const location = req.query.location
         console.log(location)
 
 
-        const users = await getUsers(location);
+        const users = await getRepairs(location);
         const tableBody = createTable(users);
         const pdfDoc = createPdf(tableBody, location);
 
@@ -169,129 +170,9 @@ async function httpDownloadPdf(req, res) {
         }
     }
 }
-// ========================PPM PDF END ===========//
-
-// ========================REPAIR REPORTS ===============//
-async function getRepairs(startDate, endDate) {
-    try {
-        const response = await axios.get(`${process.env.DOMAIN}/repair/range?startDate=${startDate}&endDate=${endDate}`);
-        return response.data;
-    } catch (error) {
-        throw new Error('Failed to retrieve user data');
-    }
-}
-
-function createRepairTable(repairs) {
-    const tableBody = [
-        ['No', 'Asset Tag', 'Date', 'Area', 'User', 'Nature of Problem', 'Solution', 'ICT Officer']
-    ];
-
-    repairs.forEach((repair, index) => {
-        tableBody.push([index + 1, repair.assetTag, repair.date, repair.physicalLocation, repair.user, repair.jobDescription, repair.solution, repair.ictOfficer]);
-    });
-
-    return tableBody;
-}
-
-function createReportPdf(tableBody, startDate, endDate) {
-    const logoPath = path.join(__dirname, "./utils/logo.png");
-    const totalRepairs = tableBody.length; // Get the total number of repairs
-    const docDefinition = {
-        content: [{
-                alignment: 'center',
-                image: logoPath,
-                width: 80,
-                margin: [0, 0, 0, 0]
-            },
-            {
-                text: `KENYATTA NATIONAL HOSPITAL \n ICT WORKSHOP - QUARTER REPAIR REPORT (${startDate} - ${endDate} )`,
-                style: 'header',
-                bold: true,
-                fontSize: 13,
-                alignment: 'center',
-                margin: [0, 0, 0, 0],
-                width: '*'
-            },
-            {
-                margin: [20, 30, 0, 10],
-                table: {
-                    headerRows: 1,
-                    widths: ["auto", "auto", 'auto', "auto", "auto", 120, 120, '10%'],
-                    body: tableBody,
-                    margin: [0, 0, 0, 5]
-                }
-            },
-            {
-                text: `TOTAL REPAIRS DONE: ${totalRepairs}`, // Display the total count
-                margin: [50, 0, 0, 0],
-                alignment: "left",
-                fontSize: 12,
-                relativePosition: { x: -20, y: -5 }
-            }
-        ],
-        defaultStyle: {
-            font: 'Roboto'
-        },
-        pageOrientation: 'landscape',
-        footer: function(currentPage, pageCount) {
-            if (currentPage === pageCount) {
-                return {
-                    columns: [{
-                        text: 'Page ' + currentPage + ' of ' + pageCount,
-                        margin: [20, 0, 0, 0],
-                        alignment: "center",
-                        fontSize: 10,
-                        width: 80
-                    }],
-                    margin: [0, 40, 0, 0]
-                };
-            }
-        }
-    };
-
-    const pdfDoc = new PdfPrinter(robotoFont).createPdfKitDocument(docDefinition);
-    return pdfDoc;
-}
-
-
-async function httpDownloadReport(req, res) {
-    try {
-        const { startDate, endDate } = req.body;
-        // console.log(startDate, endDate)
-
-
-        const repairs = await getRepairs(startDate, endDate);
-        // console.log(repairs)
-
-        const tableBody = createRepairTable(repairs);
-        // console.log(tableBody)
-
-        const pdfDoc = createReportPdf(tableBody, startDate, endDate);
-
-
-        const filename = `Report_${startDate}_to_${endDate}.pdf`;
-        console.log(filename)
-
-
-        res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"');
-        res.setHeader('Content-type', 'application/pdf');
-
-        pdfDoc.pipe(res);
-        pdfDoc.end();
-
-    } catch (error) {
-        if (error.message === 'Failed to retrieve REPAIR data') {
-            console.error('Failed to retrieve REPAIR data. Please check your internet connection and try again.');
-            res.status(500).send('Failed to retrieve REPAIR data. Please check your internet connection and try again.');
-        } else {
-            console.error('An error occurred while generating the PDF:', error);
-            res.status(500).send('An error occurred while generating the PDF');
-        }
-    }
-}
 
 
 
 
-module.exports = { httpDownloadReport };
-// httpDownloadPdf,
+
+module.exports = { repair };

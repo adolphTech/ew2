@@ -60,19 +60,16 @@ $(document).ready(function() {
         var data = table.row($(this).parents('tr')).data(); // Get data from clicked row
         console.log(data);
 
+        const assetTagInput = document.querySelector('#assetTagInput');
+        assetTagInput.value = data.assetTag;
+        console.log(assetTagInput)
+
         $('#randomnTag').text(data.assetTag); // Set assetTag value inside modal
         $('#randomnModel').text(data.model);
 
         $('#repairModal').modal('show');
     });
 });
-
-
-
-
-
-
-
 
 // ---------------- all equips table  end--------------------------------------//
 
@@ -120,3 +117,23 @@ $(document).ready(function() {
 
 
 // ---------------------------download ppm table-------------------------------//
+
+// =================================Repairs Table All =================//
+$(document).ready(function() {
+    var table = $('#repairs-table').DataTable({
+        pageLength: 2,
+        lengthMenu: [1, 2, 3, 4, 5],
+        columns: [
+            { data: 'assetTag' },
+            { data: 'date' },
+            { data: 'physicalLocation' },
+            { data: 'user' },
+            { data: 'jobDescription' },
+            { data: 'solution' },
+            { data: 'ictOfficer' }
+        ]
+    });
+
+});
+
+//===========================================repairs table end===============//
