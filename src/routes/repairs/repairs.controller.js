@@ -36,7 +36,7 @@ async function httpAddRepair(req, res) {
 
             await newRepair.save();
 
-            console.log(newRepair)
+            // console.log(newRepair)
 
 
             req.flash("success_msg", "Repair added successfull");
@@ -98,9 +98,18 @@ async function httpRenderRepairsPage(req, res) {
 async function httpRangeRepairs(req, res) {
     try {
         const { startDate, endDate } = req.query;
-        const repairs = await Repair.find({
+        const repairsUn = await Repair.find({
             date: { $gte: startDate, $lte: endDate }
         });
+
+        const repairs = repairsUn.map(repair => {
+            const repairDate = moment.utc(repair.date);
+
+            const formattedDate = repairDate.format(' M/D/YY');
+
+            return {...repair._doc, date: formattedDate };
+        });
+
         res.send(repairs);
         // console.log(req.query)
     } catch (e) {

@@ -182,9 +182,22 @@ async function getRepairs(startDate, endDate) {
 }
 
 function createRepairTable(repairs) {
+    // const tableBody = [
+    //     ['No', 'Asset Tag', 'Date', 'Area', 'User', 'Nature of Problem', 'Solution', 'ICT Officer']
+    // ];
+
     const tableBody = [
-        ['No', 'Asset Tag', 'Date', 'Area', 'User', 'Nature of Problem', 'Solution', 'ICT Officer']
-    ];
+        [
+            { text: "No", bold: true },
+            { text: "Asset Tag", bold: true },
+            { text: "Date", bold: true },
+            { text: "Area", bold: true },
+            { text: "User", bold: true },
+            { text: "Nature of problem", bold: true },
+            { text: "solution", bold: true },
+            { text: "ICT officer", bold: true },
+        ]
+    ]
 
     repairs.forEach((repair, index) => {
         tableBody.push([index + 1, repair.assetTag, repair.date, repair.physicalLocation, repair.user, repair.jobDescription, repair.solution, repair.ictOfficer]);
@@ -194,8 +207,14 @@ function createRepairTable(repairs) {
 }
 
 function createReportPdf(tableBody, startDate, endDate) {
+
+    const formattedStartDate = moment(startDate).format("DD/MM/YYYY");
+    const formattedEndDate = moment(endDate).format("DD/MM/YYYY");
+
+
+
     const logoPath = path.join(__dirname, "./utils/logo.png");
-    const totalRepairs = tableBody.length; // Get the total number of repairs
+    const totalRepairs = tableBody.length - 1; // Get the total number of repairs
     const docDefinition = {
         content: [{
                 alignment: 'center',
@@ -204,7 +223,7 @@ function createReportPdf(tableBody, startDate, endDate) {
                 margin: [0, 0, 0, 0]
             },
             {
-                text: `KENYATTA NATIONAL HOSPITAL \n ICT WORKSHOP - QUARTER REPAIR REPORT (${startDate} - ${endDate} )`,
+                text: `KENYATTA NATIONAL HOSPITAL \n ICT WORKSHOP - QUARTERLY REPAIR REPORT FROM ${formattedStartDate} T0  ${formattedEndDate} )`,
                 style: 'header',
                 bold: true,
                 fontSize: 13,
@@ -225,6 +244,7 @@ function createReportPdf(tableBody, startDate, endDate) {
                 text: `TOTAL REPAIRS DONE: ${totalRepairs}`, // Display the total count
                 margin: [50, 0, 0, 0],
                 alignment: "left",
+                bold: true,
                 fontSize: 12,
                 relativePosition: { x: -20, y: -5 }
             }
@@ -293,5 +313,5 @@ async function httpDownloadReport(req, res) {
 
 
 
-module.exports = { httpDownloadReport };
-// httpDownloadPdf,
+module.exports = { httpDownloadReport, httpDownloadPdf };
+// ,
