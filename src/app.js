@@ -66,7 +66,7 @@ const equipmentRouter = require("./routes/equipments/equipments.router");
 const pdfRouter = require("./routes/pdf/pdf.router");
 const ppmRouter = require("./routes/ppm/ppm.router")
 const repairsRouter = require("./routes/repairs/repairs.router")
-
+const usersRouter = require("./routes/users/users.router")
 
 // routes
 // app.use("/", dashboardRouter);
@@ -74,4 +74,5 @@ app.use("/", equipmentRouter);
 app.use("/pdf", pdfRouter);
 app.use("/ppm", ppmRouter);
 app.use("/repair", repairsRouter);
+app.use("/users",usersRouter);
 module.exports = app;
