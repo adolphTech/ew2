@@ -1,57 +1,18 @@
 // ---------------- all eq table --------------------------------------//
 
-// $(document).ready(function() {
-//     var table = $('#equips-table').DataTable({
-//         pageLength: 2,
-//         lengthMenu: [1, 2, 3, 4, 5],
-//         columns: [
-//             { data: 'assetTag' },
-//             { data: 'serialNumber' },
-//             { data: 'equipmentType' },
-//             { data: 'model' },
-//             { data: 'location' },
-//             { data: 'subLocation' },
-
-//             { data: 'repair' }
-//         ]
-//     });
-
-//     $('#equips-table tbody').on('click', '#repair', function() {
-//         var data = table.row($(this).parents('tr')).data(); // Get data from clicked row
-//         console.log(data)
-
-//         $('#assetTag').text(data.assetTag);
-//         $('#assetTag').val(data.assetTag);
-
-//         $('#model').text(data.model);
-//         $('#model').val(data.model);
-
-//         // $("#appPatientEmail").text(data.patientEmail)
-//         // $("#appPatientEmail").val(data.patientEmail);
-
-//         // $('#appPatientId').text(data.patientId)
-//         // $('#appPatientId').val(data.patientId); // Set patient ID in hidden input
-
-
-//         $('#repairModal').modal('show');
-//     });
-
-
-
-
-// });
 
 $(document).ready(function() {
     var table = $('#equips-table').DataTable({
         pageLength: 2,
         lengthMenu: [1, 2, 3, 4, 5],
+        processing: true, // Enable processing indicator
         columns: [
             { data: 'assetTag' },
-            { data: 'serialNumber' },
+            // { data: 'serialNumber' },
             { data: 'equipmentType' },
             { data: 'model' },
             { data: 'location' },
-            { data: 'subLocation' },
+            // { data: 'subLocation' },
             { data: 'repair' }
         ]
     });

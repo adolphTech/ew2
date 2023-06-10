@@ -45,7 +45,52 @@ async function httpFetchEquip(req, res) {
     }
 }
 
+// async function httpAdd(req, res) {
+//     try {
+//         const { assetTag, serialNumber,equipmentType,model,physicalLocation,department } = req.body;
+
+
+//             const eqData = {
+//                 assetTag, 
+//                 serialNumber,
+//                 equipmentType,
+//                 model,
+//                 physicalLocation,
+//                 department
+//             }
+
+//             const newEq = new Equipment(eqData);
+
+//             await newEq.save();
+//         // console.log(equipment)
 
 
 
-module.exports = { httpFetchEquip, httpRenderEq, httpFetchEquipSpec };
+//     } catch (e) {
+//         console.log(e)
+
+    
+//     }
+// }
+
+async function httpAdd(req, res) {
+    try {
+      const eqDataArray = req.body; // Assuming req.body is an array of JSON objects
+  
+      // Iterate over each JSON object in the array
+      for (const eqData of eqDataArray) {
+        const newEq = new Equipment(eqData);
+        await newEq.save();
+      }
+  
+      res.status(200).json({ message: 'Documents added successfully' });
+    } catch (e) {
+      console.log(e);
+      res.status(500).json({ error: 'An error occurred while adding documents' });
+    }
+  }
+  
+
+
+
+module.exports = { httpFetchEquip, httpAdd,httpRenderEq, httpFetchEquipSpec };

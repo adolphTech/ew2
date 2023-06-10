@@ -1,93 +1,69 @@
 {{> head}}
 
+
+
 <body class="row">
-
-
-  <!-- start of nav bar -->
-
   {{> navBar}}
-
-  <!-- end of navbar -->
-
-
-  <!-- start of side bar -->
   {{> sidebar}}
-  
-  <!-- end of side bar -->
- 
-  <!-- start of page content -->
-  
-
- <div class="col-sm-8 pt-2 mt-3  " style="">
-      
-   {{> messages }}           
 
 
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark container-fluid mb-3">
-  <div class="container-fluid">
-    <a class="navbar-brand p-1 fs-5">All Equipments</a>
-      
-      {{!-- <button class="btn btn-light" type="submit">Add Equipments</button> --}}
-      <button type="button" class="btn btn-primary btn-sm" data-bs-toggle='modal' data-bs-target="#addEqModal">Add Equipment</button>
+{{!-- animation --}}
+ <div id="loader-overlay">
+    <div id="loader"></div>
+      <div id="loading-text">Getting your data ready....</div>
+  </div> 
 
- 
+{{!-- animation --}}
+
+
+  <div class="col-sm-8 pt-2 mt-3">
+    {{> messages }}
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark container-fluid mb-3">
+      <div class="container-fluid">
+        <a class="navbar-brand p-1 fs-5">All Equipments</a>
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addEqModal">Add Equipment</button>
+      </div>
+    </nav>
+
+    <div class="bg-white p-3 pt-4">
+      <div class="table-responsive">
+        <table id="equips-table" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th class="fs-6">Asset Tag</th>
+              {{!-- <th class="fs-6">Serial Number</th> --}}
+              <th class="fs-6">Equipment Type</th>
+              <th class="fs-6">Model</th>
+              <th class="fs-6">Location</th>
+              <th class="fs-6">Repair</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each equips}}
+            <tr>
+              <td>{{this.assetTag}}</td>
+              {{!-- <td class="fs-6 overflow-wrap-break-word">{{this.serialNumber}}</td> --}}
+              <td>{{this.equipmentType}}</td>
+              <td class="fs-6">{{this.model}}</td>
+              <td class="fs-6 text-center">{{this.department}}</td>
+              <td class="fs-6 text-center">
+                <button class="btn btn-link btn-sm" id="repair" data-bs-toggle="modal" data-bs-patientid="{{this.assetTag}}" data-bs-target="#repairModal" data-bs-placement="bottom" title="Repair Asset">
+                  <span style="font-size: 1.2em;">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                  </span>
+                </button>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {{>addEquipment.modal}}
+    {{>addRepair.modal}}
   </div>
-</nav>
-
-   <div class="bg-white p-3  pt-4 ">
-          
-<table id="equips-table" class="table table-responsive table-striped table-bordered responsive">
-  <thead>
-    <tr>
-      <th class="fs-6">Asset Tag</th>
-      <th class="fs-6">Serial Number</th>
-      <th class="fs-6">Equipment Type</th>
-      <th class="fs-6">Model</th>
-      <th class="fs-6">Location</th>
-      <th class="fs-6">Sub Location</th>
-      <th class="fs-6">Repair</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each equips}}
-    <tr>
-      <td>{{this.assetTag}}</td>
-      <td class="fs-6 text-nowrap">{{this.serialNumber}}</td>
-      <td>{{this.equipmentType}}</td>
-      <td class="fs-6 ">{{this.model}}</td>
-      <td class="fs-6 text-center">{{this.physicalLocation}}</td>
-      <td class="fs-6 text-center">{{this.department}}</td>
-     
-        <td class="fs-6 text-center">
-       
-            <button class='btn btn-link btn-sm' id="repair"  data-bs-toggle='modal tooltip' data-bs-patientid="{{this.assetTag}}"   data-bs-target="#repairModal" data-bs-placement="bottom" title="Repair Asset">
-              <span style="font-size: 1.2em;">
-              <i class="fa-solid fa-screwdriver-wrench"></i>
-              </span>
-            </button>
-
-            
-
-
-        </td> 
-    </tr>
-    {{/each}}
-  </tbody>
-</table>
-
-</div>
-<!-- Modal -->
-{{>addEquipment.modal}}
-
-{{>addRepair.modal}}
-
-  </div>
-
-
-  <!-- end of page  content -->
-
-
-
-
 
   {{> footer}}
+</body>

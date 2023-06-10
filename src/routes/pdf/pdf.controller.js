@@ -98,10 +98,10 @@ function createPdf(tableBody, location) {
                 }]
             },
             {
-                margin: [20, 30, 0, 10],
+                margin: [20, 30, 0, 20],
                 table: {
                     headerRows: 1,
-                    widths: ["auto", 100, "auto", "auto", "20%", "auto", "10%", "10%"],
+                    widths: ["auto", 100, "10%", "auto", "20%", "auto", "10%", "10%"],
                     body: tableBody,
                     margin: [0, 0, 0, 5],
                     bold: true,
@@ -124,7 +124,7 @@ function createPdf(tableBody, location) {
                 return {
                     columns: [{
                         text: 'Page ' + currentPage + ' of ' + pageCount,
-                        margin: [20, 0, 0, 0],
+                        margin: [20, 0, 0,0],
                         alignment: "center",
                         fontSize: 10,
                         width: 80

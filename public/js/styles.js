@@ -1,3 +1,15 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Simulate data loading
+    setTimeout(function() {
+      var loaderOverlay = document.getElementById('loader-overlay');
+      loaderOverlay.style.display = 'none';
+    }, 0); // 10 seconds
+  });
+// animation  
+
+
+
+
 // toggle side bar 
 let toggleSide = false;
 
@@ -22,44 +34,6 @@ sidebarToggler.addEventListener("click", () => {
     })
     // navbar toggle
 
-// calendar
-document.addEventListener('DOMContentLoaded', () => {
-    const calendar = new VanillaCalendar('#calendar');
-    calendar.init();
-});
-
-let hidden = false;
-
-// document.getElementById("clickHide").addEventListener("click",()=>{  
-
-//     var calendar = document.getElementById("calendar");
-//     if ( calendar.classList.contains("hidden")) {
-//         calendar.classList.remove("hidden");
-//         console.log("The element has the class 'hidden'");
-//       } else {
-//        calendar.classList.add("hidden");
-//         console.log("The element does not have the class 'hidden'");
-//       }
 
 
 
-
-
-// })
-
-document.getElementById("hideEvents").addEventListener("click", () => {
-
-    const events = document.getElementById("events");
-    if (events.classList.contains("hidden")) {
-        events.classList.remove("hidden");
-        console.log("The element has the class 'hidden'");
-    } else {
-        events.classList.add("hidden");
-        console.log("The element does not have the class 'hidden'");
-    }
-
-})
-
-
-
-// calendar
