@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
       var loaderOverlay = document.getElementById('loader-overlay');
       loaderOverlay.style.display = 'none';
-    }, 0); // 10 seconds
+    }, 300); // 10 seconds
   });
 // animation  
 
