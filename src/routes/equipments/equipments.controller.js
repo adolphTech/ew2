@@ -45,33 +45,7 @@ async function httpFetchEquip(req, res) {
     }
 }
 
-// async function httpAdd(req, res) {
-//     try {
-//         const { assetTag, serialNumber,equipmentType,model,physicalLocation,department } = req.body;
 
-
-//             const eqData = {
-//                 assetTag, 
-//                 serialNumber,
-//                 equipmentType,
-//                 model,
-//                 physicalLocation,
-//                 department
-//             }
-
-//             const newEq = new Equipment(eqData);
-
-//             await newEq.save();
-//         // console.log(equipment)
-
-
-
-//     } catch (e) {
-//         console.log(e)
-
-    
-//     }
-// }
 
 async function httpAdd(req, res) {
     try {
