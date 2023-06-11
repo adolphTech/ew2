@@ -6,12 +6,19 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const cookieparser = require("cookie-parser");
+
+require("./middlewares/passport")(passport); 
 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
+
+
+app.use(cookieparser("secret"));
 
 //express session middleware
 app.use(
@@ -27,6 +34,10 @@ app.use(
 );
 
 ;
+
+//passport middleware 
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //connect flash
@@ -66,13 +77,13 @@ const equipmentRouter = require("./routes/equipments/equipments.router");
 const pdfRouter = require("./routes/pdf/pdf.router");
 const ppmRouter = require("./routes/ppm/ppm.router")
 const repairsRouter = require("./routes/repairs/repairs.router")
-const usersRouter = require("./routes/users/users.router")
+const usersRouter = require("./routes/users/users.router");
 
 // routes
 // app.use("/", dashboardRouter);
 app.use("/", equipmentRouter);
 app.use("/pdf", pdfRouter);
 app.use("/ppm", ppmRouter);
-app.use("/repair", repairsRouter);
+app.use("/repair", repairsRouter); 
 app.use("/users",usersRouter);
 module.exports = app;

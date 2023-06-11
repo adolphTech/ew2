@@ -3,39 +3,90 @@
 
 $(document).ready(function() {
     var table = $('#equips-table').DataTable({
+        serverSide: true, // Enable server-side processing
+        ajax: {
+            url: '/all', // API endpoint to fetch the data
+            type: 'GET',
+            data: function (d) {
+                // Add pagination parameters to the request
+                d.start = d.start || 0; // Starting index of the data
+                d.length = d.length || 10; // Number of items per page
+                return d;
+            }
+        },
         pageLength: 2,
         lengthMenu: [1, 2, 3, 4, 5],
-        processing: true, // Enable processing indicator
         columns: [
-            { data: 'assetTag' },
-            // { data: 'serialNumber' },
+            {data: 'assetTag'  },
             { data: 'equipmentType' },
             { data: 'model' },
-            { data: 'location' },
-            // { data: 'subLocation' },
-            { data: 'repair' }
+            { data: 'department' },
+            {
+                // Custom column for the Repair button
+                data: null,
+                render: function (data, type, row) {
+                    return '<button class="btn btn-link btn-sm repair-button" data-assettag="' + data.assetTag + '" data-bs-toggle="modal" data-bs-target="#repairModal" data-bs-placement="bottom" title="Repair Asset">' +
+                            '<span style="font-size: 1.2em;">' +
+                                '<i class="fa-solid fa-screwdriver-wrench"></i>' +
+                            '</span>' +
+                        '</button>';
+                }
+            },
+            {
+                // Custom column for the Update button
+                data: null,
+                render: function (data, type, row) {
+                    return '<button class="btn btn-link btn-sm edit-button" data-assettag="' + data.assetTag + '" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-placement="bottom" title="Repair Asset">' +
+                            '<span style="font-size: 1.2em;">' +
+                                '<i class="fa-regular fa-pen-to-square"></i>' +
+                            '</span>' +
+                        '</button>';
+                }
+            }
         ]
     });
 
-    $('#equips-table tbody').on('click', '#repair', function() {
-        var data = table.row($(this).parents('tr')).data(); // Get data from clicked row
-        console.log(data);
+   // Event delegation for the Repair button
+$('#equips-table tbody').on('click', '.repair-button', function() {
+    var assetTag = $(this).data('assettag');
+    console.log(assetTag);
 
-        const assetTagInput = document.querySelector('#assetTagInput');
-        assetTagInput.value = data.assetTag;
-        console.log(assetTagInput)
+    const assetTagInput = document.querySelector('#assetTagInput');
+    assetTagInput.value = assetTag;
+    console.log(assetTagInput)
 
-        $('#randomnTag').text(data.assetTag); // Set assetTag value inside modal
-        $('#randomnModel').text(data.model);
+    const model = table.row($(this).closest('tr')).data().model;
+    $('#randomnTag').text(assetTag); // Set assetTag value inside modal
+    $('#randomnModel').text(model);
 
-        $('#repairModal').modal('show');
-    });
+    $('#repairModal').modal('show');
 });
+
+  // Event delegation for the Edit button
+  $('#equips-table tbody').on('click', '.edit-button', function() {
+    var assetTag = $(this).data('assettag');
+    console.log(assetTag);
+
+    const editAssetTagInput = document.querySelector('#editAssetTagInput');
+    editAssetTagInput.value = assetTag;
+    console.log(editAssetTagInput)
+
+    const editModal = table.row($(this).closest('tr')).data().model;
+    $('#editTag').text(assetTag); // Set assetTag value inside modal
+    $('#editModel').text(editModal);
+
+    $('exampleModal').modal('show');
+});
+
+});
+
+
+
 
 // ---------------- all equips table  end--------------------------------------//
 
 // ---------------------------- download ppm table---------------------------//
-//
+
 
 
 $(document).ready(function() {

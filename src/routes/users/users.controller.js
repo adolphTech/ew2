@@ -1,95 +1,124 @@
-require("dotenv").config();
-const axios = require("axios");
-const { initializeApp } = require("firebase/app");
-const { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } = require("firebase/auth");
+const bcrypt = require("bcryptjs");
+const passport = require("passport");
+const User = require("../../models/users/users.model");
 
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID
+
+// pages to render
+async function renderLoginPage(req,res){
+    res.render("login")
+}
+
+// register
+async function renderRegisterPage(req,res){
+    res.render("register")
+}
+
+
+//register handler
+async function httpUserRegister(req,res){
+    const {name,email,password,password2} = req.body;
+    let errors = [];
+
+    //check required fields
+    if(!name || !email || !password || !password2){
+        errors.push({msg:"please fill in all fields"});
+    } 
+
+    //check password match
+    if(password !== password2){
+        errors.push({msg :"passwords do not match"});
+    }
+   
+    //check password length
+    if(password.length <6 ){
+        errors.push({msg:"password should be atleast 6 characters"});
+    }
+
+
+    if(errors.length > 0){
+            res.render("register",{
+                errors,
+                name,
+                email,
+                password,
+                password2
+            }); 
+    }
+    else{
+        //validation passed
+ User.findOne({email})
+ .then(user =>{
+if(user){
+    //use exists   
+    errors.push({msg :"Email is already registered"});
+    res.render("register",{
+        errors,
+        name, 
+        email,
+        password,
+        password2
+    }); 
+}else{
+ const newUser = new User({
+    name,
+    email,
+    password
+
+ });
+// hash password
+bcrypt.genSalt(8,(err,salt)=>{
+ bcrypt.hash(newUser.password,salt,(err,hash)=>{
+  if(err) throw err;
+
+  //set password to hash
+  newUser.password = hash
+
+  //save user
+  newUser.save()
+  .then( user =>{
+    req.flash("success_msg","You are now registered and can log in");
+    res.redirect("/");
+  })
+  .catch(err =>console.log(err));
+ })
+})
+
+}
+ });
+ 
+
+    }
+
 };
 
-const appFire = initializeApp(firebaseConfig);
-const auth = getAuth(appFire);
+//login handle
 
-async function httpSignUp(req, res) {
-  try {
-    const { email, password } = req.body;
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    res.send(user);
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log({ errorCode, errorMessage });
-  }
-}
+async function httpUserLogin(req,res,next){
+    passport.authenticate("local",{
+       successRedirect: "/",
+       failureRedirect : "/users/login",
+       failureFlash :true
+    })(req,res,next);
+   };
 
-async function httpLogin(req, res) {
-  try {
-    const { email, password } = req.body;
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+   //logout handle
+async  function httpUserLogout(req, res, next){
+    req.logout((err)=>{
+      if (err) { return next(err); }
 
-    // res.send("logged In");
-    res.redirect("/")
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // console.log({ errorCode, errorMessage });
-
-    req.flash(`error_msg`, `Login failed check email or password`);
-    res.redirect('/users/login');
-  }
-}
-
-async function renderLogin(req,res){
-  try{
-    res.render("login.hbs")
-  }catch(e){
-    console.log(e)
-    
-  }
-}
-
-async function protected(req,res){
-  try{
-// This route is protected and will only be accessible if the user is authenticated
-const user = req.user; // Access the authenticated user object
-
-res.send(`Protected route accessed successfully by user: ${user.email}`);
-  }catch(e){
-    console.log(e)
-  }
-}
-
-
-async function logout(req,res){
-  auth.signOut()
-    .then(() => {
-      // res.send("Logged out successfully");
-      res.redirect("/users/login")
-    })
-    .catch((error) => {
-      console.log("Logout error:", error);
-      res.status(500).send("Failed to logout");
+      req.flash("success_msg","You are logged out");
+      res.redirect('/users/login');
     });
+  };
+
+
+
+
+module.exports = {
+    renderLoginPage,
+    renderRegisterPage,
+    httpUserRegister,
+    httpUserLogin,
+    httpUserLogout,
+   
 }
-
-
-function isAuthenticated(req, res, next) {
-  const user = auth.currentUser; // Get the current user from Firebase Authentication
-
-  if (user) {
-    req.user = user; // Attach the user object to the request for further use in the route handlers
-    next(); // User is authenticated, proceed to the next middleware or route handler
-  } else {
-    res.status(401).redirect("/users/login"); // User is not authenticated, send 401 Unauthorized status
-  }
-}
-
-module.exports = { httpLogin, httpSignUp ,logout, renderLogin ,protected,isAuthenticated};

@@ -1,16 +1,34 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
+const passport = require("passport");
+const User = require("../../models/users/users.model");
 
-// const {isAuthenticated} = require("../../middlewares/auth.js");
 
-const {httpLogin,httpSignUp,logout ,renderLogin,protected,isAuthenticated}= require("./users.controller.js");
+const {ensureAuthenticated} = require("../../middlewares/auth")
+
+const {
+    renderLoginPage,
+    renderRegisterPage,
+    httpUserRegister,
+    httpUserLogin,
+    httpUserLogout,
+    
+
+} = require("./users.controller")
+
 
 const usersRouter = express.Router();
 
-usersRouter.get("/login",renderLogin);
-usersRouter.post("/login",httpLogin);
-usersRouter.post("/signup",httpSignUp);
-usersRouter.get("/logout",logout);
 
-usersRouter.get("/protected",isAuthenticated,protected);
 
-module.exports = usersRouter;
+usersRouter.get("/login",renderLoginPage);
+// usersRouter.get("/register",ensureAuthenticated,renderRegisterPage);
+
+usersRouter.post("/register",httpUserRegister);
+
+usersRouter.post("/login",httpUserLogin);
+usersRouter.get("/logout",ensureAuthenticated,httpUserLogout);
+
+
+
+module.exports = usersRouter

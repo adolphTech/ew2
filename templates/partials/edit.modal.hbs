@@ -1,0 +1,115 @@
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Equipment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+
+          <form action="/update" method="POST" id="updateForm">
+          <div class="mb-3">
+
+              <div class="row">
+                <div class="row">
+                  <div class="col-sm-6">
+                     <strong>Asset Tag:</strong>
+                     <span id="editTag"></span>
+
+                  </div>
+                 
+
+                <div class="col-sm-6">
+                  <strong>Model:</strong>
+                  <span id="editModel"></span>
+
+                </div>
+
+                
+                </div>
+              
+
+              </div>
+            </div>
+
+            <div class="mb-3">
+
+              <div class="row">
+                <div class="row">
+                  <div class="col-sm-6">
+                     <strong>Asset Tag:</strong>
+                     <input class="form-control" type="text" name="newAssetTag" id="editAsset" placeholder="update the asset Tag" >
+
+                  </div>
+                 
+
+                <div class="col-sm-6">
+                  <strong>Equipment Type:</strong>
+                 <input class="form-control"  type="text" name="equipmentType" id="editEquip" placeholder="Update type">
+
+                </div>
+                
+                </div>
+              
+
+              </div>
+            </div>
+
+            <div class="mb-3">
+
+              <div class="row">
+                <div class="row">
+                  <div class="col-sm-6">
+                     <strong>Location:</strong>
+                     <input class="form-control" type="text" name="location" id="editLoc"  placeholder="update physical Location">
+
+                  </div>
+                 
+
+                <div class="col-sm-6">
+                  <strong>Model:</strong>
+                 <input class="form-control"  type="text" placeholder="Update Model"   name="modal" id="editModal">
+
+                </div>
+                
+                </div>
+              
+
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <input
+                type="hidden"
+                class="form-control"
+                name="assetTag"
+                id="editAssetTagInput"
+              />
+
+            </div>
+
+             <div class="modal-footer">
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >Close</button>
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          
+          </form>
+
+
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

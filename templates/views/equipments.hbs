@@ -22,7 +22,7 @@
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark container-fluid mb-3">
       <div class="container-fluid">
         <a class="navbar-brand p-1 fs-5">All Equipments</a>
-        {{!-- <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addEqModal">Add Equipment</button> --}}
+        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addEqModal">Add Equipment</button>
       </div>
     </nav>
 
@@ -37,6 +37,7 @@
               <th class="fs-6">Model</th>
               <th class="fs-6">Location</th>
               <th class="fs-6">Repair</th>
+              <th class="fs-6">Update</th>
             </tr>
           </thead>
           <tbody>
@@ -54,6 +55,14 @@
                   </span>
                 </button>
               </td>
+
+                <td class="fs-6 text-center">
+                <button class="btn btn-link btn-sm" id="edit" data-bs-toggle="modal" data-bs-patientid="{{this.assetTag}}" data-bs-target="#exampleModal" data-bs-placement="bottom" title="Repair Asset">
+                  <span style="font-size: 1.2em;">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                  </span>
+                </button>
+              </td>
             </tr>
             {{/each}}
           </tbody>
@@ -62,7 +71,10 @@
     </div>
 
     {{>addEquipment.modal}}
-    {{>addRepair.modal}}
+ 
+    {{>edit.modal}}
+
+     {{>addRepair.modal}}
   </div>
 
   {{> footer}}
