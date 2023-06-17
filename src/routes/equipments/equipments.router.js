@@ -7,7 +7,7 @@ const {ensureAuthenticated} = require("../../middlewares/auth")
 
 const equipmentsRouter = express.Router();
 
-equipmentsRouter.get("/", ensureAuthenticated,httpRenderEq);
+equipmentsRouter.get("/",httpRenderEq);
 equipmentsRouter.get("/loc", httpFetchEquipSpec)
 equipmentsRouter.get("/all", httpFetchEquip);
 equipmentsRouter.post("/knh",httpAdd)

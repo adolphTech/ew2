@@ -1,44 +1,4 @@
 
-<!DOCTYPE html>
-<html>
-<head>
-  <!-- Include the Select2 CSS file -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-
-  <!-- Include jQuery library -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- Include the Select2 JS file -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
-</head>
-<body>
- <script>
-    $(function() {
-      // Fetch cities data from REST endpoint
-      $.ajax({
-        url: "/locations",
-        method: "GET",
-        success: function(response) {
-          const cities = response; // Assuming the response is an array of cities
-
-          $('#addEqModal').on('shown.bs.modal', function() {
-            // Create options based on the array
-            var options = cities.map(city => `<option value="${city}">${city}</option>`).join('');
-
-            // Set the options in the select input
-            $("#country").html(options);
-
-            // Initialize select2 with search enabled
-            $("#country").select2();
-          });
-        },
-        error: function(error) {
-          console.log(error);
-        }
-      });
-    });
-  </script>
-
   <div class="modal fade" id="addEqModal" tabindex="-1" aria-labelledby="addEqModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -71,7 +31,13 @@
               </div>
               <div class="mb-3 physcloc">
                 <label for="country" class="form-label"><strong>Physical Location:</strong></label>
-                <select class="form-control" id="country"></select>
+                <select class="form-control" id="country" name="physicalLocation">
+                  <option value="" disabled selected>Select a  Location</option>
+                   {{#each ppmLocations}}
+                   <option value="{{this}}">{{this}}</option>
+                   {{/each}}
+                </select>
+   
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -83,6 +49,5 @@
       </div>
     </div>
   </div>
-</body>
-</html>
+
 

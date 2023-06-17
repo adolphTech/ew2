@@ -2,87 +2,79 @@
 
 
 $(document).ready(function() {
-    var table = $('#equips-table').DataTable({
-        serverSide: true, // Enable server-side processing
-        ajax: {
-            url: '/all', // API endpoint to fetch the data
-            type: 'GET',
-            data: function (d) {
-                // Add pagination parameters to the request
-                d.start = d.start || 0; // Starting index of the data
-                d.length = d.length || 10; // Number of items per page
-                return d;
-            }
+  var table = $('#equips-table').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: {
+        url: '/all', // API endpoint for server-side processing
+        type: 'GET', // Use POST method for server-side processing
+      },
+        pageLength:2,
+        lengthMenu:[1,2,3,4,5],
+      columns: [
+        { data: 'assetTag', className: 'fs-6' },
+        { data: 'equipmentType', className: 'fs-6' },
+        { data: 'model', className: 'fs-6' },
+        { data: 'department', className: 'fs-6 text-center' },
+        {
+          data: null,
+          className: 'fs-6 text-center',
+          render: function(data, type, row) {
+            return '<button class="btn btn-link btn-sm" id="repair" data-bs-toggle="modal" data-bs-patientid="' + data.assetTag + '" data-bs-target="#repairModal" data-bs-placement="bottom" title="Repair Asset">' +
+              '<span style="font-size: 1.2em;">' +
+              '<i class="fa-solid fa-screwdriver-wrench"></i>' +
+              '</span>' +
+              '</button>';
+          }
         },
-        pageLength: 2,
-        lengthMenu: [1, 2, 3, 4, 5],
-        columns: [
-            {data: 'assetTag'  },
-            { data: 'equipmentType' },
-            { data: 'model' },
-            { data: 'department' },
-            {
-                // Custom column for the Repair button
-                data: null,
-                render: function (data, type, row) {
-                    return '<button class="btn btn-link btn-sm repair-button" data-assettag="' + data.assetTag + '" data-bs-toggle="modal" data-bs-target="#repairModal" data-bs-placement="bottom" title="Repair Asset">' +
-                            '<span style="font-size: 1.2em;">' +
-                                '<i class="fa-solid fa-screwdriver-wrench"></i>' +
-                            '</span>' +
-                        '</button>';
-                }
-            },
-            {
-                // Custom column for the Update button
-                data: null,
-                render: function (data, type, row) {
-                    return '<button class="btn btn-link btn-sm edit-button" data-assettag="' + data.assetTag + '" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-placement="bottom" title="Repair Asset">' +
-                            '<span style="font-size: 1.2em;">' +
-                                '<i class="fa-regular fa-pen-to-square"></i>' +
-                            '</span>' +
-                        '</button>';
-                }
-            }
-        ]
+        {
+          data: null,
+          className: 'fs-6 text-center',
+          render: function(data, type, row) {
+            return '<button class="btn btn-link btn-sm" id="edit" data-bs-toggle="modal" data-bs-patientid="' + data.assetTag + '" data-bs-target="#exampleModal" data-bs-placement="bottom" title="Repair Asset">' +
+              '<span style="font-size: 1.2em;">' +
+              '<i class="fa-regular fa-pen-to-square"></i>' +
+              '</span>' +
+              '</button>';
+          }
+        }
+      ]
     });
 
-   // Event delegation for the Repair button
-$('#equips-table tbody').on('click', '.repair-button', function() {
-    var assetTag = $(this).data('assettag');
-    console.log(assetTag);
+ // Event delegation for the Repair button
+$('#equips-table tbody').on('click', '#repair', function() {
+  var assetTag = $(this).data('bs-patientid');
+  console.log(assetTag);
 
-    const assetTagInput = document.querySelector('#assetTagInput');
-    assetTagInput.value = assetTag;
-    console.log(assetTagInput)
+  const assetTagInput = document.querySelector('#assetTagInput');
+  assetTagInput.value = assetTag;
+  console.log(assetTagInput)
 
-    const model = table.row($(this).closest('tr')).data().model;
-    $('#randomnTag').text(assetTag); // Set assetTag value inside modal
-    $('#randomnModel').text(model);
+  const model = table.row($(this).closest('tr')).data().model;
+  $('#randomnTag').text(assetTag); // Set assetTag value inside modal
+  $('#randomnModel').text(model);
 
-    $('#repairModal').modal('show');
+  $('#repairModal').modal('show');
 });
 
-  // Event delegation for the Edit button
-  $('#equips-table tbody').on('click', '.edit-button', function() {
-    var assetTag = $(this).data('assettag');
-    console.log(assetTag);
+// Event delegation for the Edit button
+$('#equips-table tbody').on('click', '#edit', function() {
+  var assetTag = $(this).data('bs-patientid');
+  console.log(assetTag);
 
-    const editAssetTagInput = document.querySelector('#editAssetTagInput');
-    editAssetTagInput.value = assetTag;
-    console.log(editAssetTagInput)
+  const editAssetTagInput = document.querySelector('#editAssetTagInput');
+  editAssetTagInput.value = assetTag;
+  console.log(editAssetTagInput)
 
-    const editModal = table.row($(this).closest('tr')).data().model;
-    $('#editTag').text(assetTag); // Set assetTag value inside modal
-    $('#editModel').text(editModal);
+  const editModal = table.row($(this).closest('tr')).data().model;
+  $('#editTag').text(assetTag); // Set assetTag value inside modal
+  $('#editModel').text(editModal);
 
-    $('exampleModal').modal('show');
+  $('exampleModal').modal('show');
 });
 
 });
-
-
-
-
+  
 // ---------------- all equips table  end--------------------------------------//
 
 // ---------------------------- download ppm table---------------------------//

@@ -60,9 +60,12 @@ async function httpRenderEq(req, res) {
 
         const equipsArr = await axios.get(`${process.env.DOMAIN}/all`)
         const equips = equipsArr.data
+
+        const ppmLocArr = await axios.get(`${process.env.DOMAIN}/locations`)
+        const ppmLocations = ppmLocArr.data.sort()
             // console.log(equips)
 
-        res.render("equipments.hbs", { equips, page: "ALL EQUIPMENTS" })
+        res.render("equipments.hbs", { equips,ppmLocations, page: "ALL EQUIPMENTS" })
 
     } catch (e) {
         console.log(e)
@@ -82,42 +85,50 @@ async function httpFetchEquipSpec(req, res) {
     }
 }
 
-// async function httpFetchEquip(req, res) {
-//     try {
 
-//         const equipments = await Equipment.find({});
-//         res.send(equipments);
-//         // console.log(equipments)
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
+//fetch 2  //
+async function httpFetchEquip (req, res){
+  try {
+    const draw = req.query.draw;
+    const start = parseInt(req.query.start) || 0;
+    const length = parseInt(req.query.length) || 10;
+    // const searchValue = req.query.search.value || '';
+    const searchValue = req.query.search && req.query.search.value ? req.query.search.value : '';
 
-async function httpFetchEquip(req, res) {
-    try {
-      const draw = req.query.draw; // Draw counter sent by DataTables
-      const start = parseInt(req.query.start) || 0; // Starting index of the data
-      const length = parseInt(req.query.length) || 10; // Number of items per page
-  
-      // Get the total count of all equipments
-      const totalCount = await Equipment.countDocuments();
-  
-      // Get the paginated equipments based on start and length
-      const equipments = await Equipment.find({})
-        .skip(start)
-        .limit(length);
-  
-      res.json({
-        draw,
-        recordsTotal: totalCount,
-        recordsFiltered: totalCount,
-        data: equipments,
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
+
+    const totalCount = await Equipment.countDocuments();
+    const filteredCount = await Equipment.countDocuments({
+      $or: [
+        { assetTag: { $regex: searchValue, $options: 'i' } },
+        { equipmentType: { $regex: searchValue, $options: 'i' } },
+        { model: { $regex: searchValue, $options: 'i' } },
+        { department: { $regex: searchValue, $options: 'i' } },
+      ],
+    });
+
+    const equipments = await Equipment.find({
+      $or: [
+        { assetTag: { $regex: searchValue, $options: 'i' } },
+        { equipmentType: { $regex: searchValue, $options: 'i' } },
+        { model: { $regex: searchValue, $options: 'i' } },
+        { department: { $regex: searchValue, $options: 'i' } },
+      ],
+    })
+      .skip(start)
+      .limit(length);
+
+    res.json({
+      draw,
+      recordsTotal: totalCount,
+      recordsFiltered: filteredCount,
+      data: equipments,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal server error' });
   }
+};
+
   
 
 async function httpAdd(req, res) {
