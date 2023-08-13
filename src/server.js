@@ -10,13 +10,12 @@ const { connection } = require("./db/mongoose");
 
 server.listen(PORT, async() => {
     // console.log(`server has started on ${PORT}`)
-    let startTime = performance.now();
+    // let startTime = performance.now();
     await connection();
-    let endTime = performance.now();
+    // let endTime = performance.now();
 
-    const timeTakenToConnectDb = Math.floor(endTime - startTime);
+    // const timeTakenToConnectDb = Math.floor(endTime - startTime);
 
     console.log(
-        `server is listening on port ${PORT} and it took ${timeTakenToConnectDb} seconds to connect to the db`
-    );
+        `server is listening on port ${PORT}`    );
 });
